@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pip install -r demo-web-cuentabancaria/requirements.txt",
+  "buildCommand": "pip install -r requirements.txt",
   "routes": [
     {
       "src": "/(.*)",
