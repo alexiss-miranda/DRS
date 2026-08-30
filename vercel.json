@@ -1,5 +1,4 @@
 {
-  "runtime": "python@3.11",
   "buildCommand": "pip install -r demo-web-cuentabancaria/requirements.txt",
   "routes": [
     {
