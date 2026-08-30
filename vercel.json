@@ -1,9 +1,14 @@
 {
-  "buildCommand": "uv pip install --system -r requirements.txt",
+  "builds": [
+    {
+      "src": "api/handler.py",
+      "use": "@vercel/python"
+    }
+  ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/api/handler.py"
+      "dest": "api/handler.py"
     }
   ]
 }
