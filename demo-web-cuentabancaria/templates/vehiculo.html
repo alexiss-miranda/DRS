@@ -51,14 +51,14 @@
     }
   </style>
 </head>
-<body class="font-sans h-screen flex flex-col overflow-hidden text-brand-text">
+<body class="font-sans min-h-screen flex flex-col overflow-y-auto text-brand-text md:h-screen md:overflow-hidden">
 
   <!-- TopNavBar -->
   <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-[#0b101b]/90 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
     <div class="flex items-center gap-3">
       <span class="font-bold text-lg text-white tracking-tight">MR22058 DRS GUIA 1</span>
     </div>
-    
+
     <!-- Navegación de Ejercicios -->
     <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
       <a href="/cuenta-bancaria" class="text-brand-muted hover:text-white transition-colors">Abstracción</a>
@@ -70,23 +70,35 @@
       <a href="/animales" class="text-brand-muted hover:text-white transition-colors">Polimorfismo</a>
       <a href="/herencia-multinivel" class="text-brand-muted hover:text-white transition-colors">Herencia Multinivel</a>
     </nav>
-    
+
     <div class="flex items-center gap-4">
-      <div class="flex items-center gap-2 text-brand-green font-mono text-xs bg-brand-green/10 px-3 py-1 rounded-full border border-brand-green/30">
+      <div class="hidden sm:flex items-center gap-2 text-brand-green font-mono text-xs bg-brand-green/10 px-3 py-1 rounded-full border border-brand-green/30">
         <span class="w-2 h-2 rounded-full bg-brand-green animate-pulse"></span>
         Flask API: Online (200 OK)
       </div>
       <button class="text-brand-muted hover:text-white transition-colors p-1">
         <span class="material-symbols-outlined text-xl">dark_mode</span>
       </button>
+      <button class="md:hidden text-white p-1" aria-label="Abrir menú" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+        <span class="material-symbols-outlined text-xl">menu</span>
+      </button>
     </div>
   </header>
 
+  <!-- Menú móvil -->
+  <nav id="mobile-menu" class="hidden md:hidden fixed top-16 left-0 w-full z-40 bg-[#0b101b] border-b border-white/10 px-6 py-3 text-sm font-medium">
+    <a href="/cuenta-bancaria" class="block py-2 text-brand-muted hover:text-white">Abstracción</a>
+    <a href="/empleado" class="block py-2 text-brand-muted hover:text-white">Encapsulación</a>
+    <a href="/vehiculo" class="block py-2 text-brand-cyan font-semibold">Herencia</a>
+    <a href="/animales" class="block py-2 text-brand-muted hover:text-white">Polimorfismo</a>
+    <a href="/herencia-multinivel" class="block py-2 text-brand-muted hover:text-white">Herencia Multinivel</a>
+  </nav>
+
   <!-- Main Workspace (3 Columnas) -->
-  <main class="flex-1 mt-16 flex flex-col md:flex-row gap-px bg-black/40 h-[calc(100vh-64px)] overflow-hidden">
-    
+  <main class="flex-1 mt-16 flex flex-col md:flex-row gap-px bg-black/40 h-auto overflow-visible md:h-[calc(100vh-64px)] md:overflow-hidden">
+
     <!-- Columna 1: Teoría & UML (Sidebar Izquierdo) -->
-    <aside class="w-full md:w-80 lg:w-96 glass-panel h-full flex flex-col p-5 gap-4 overflow-y-auto shrink-0 z-10">
+    <aside class="w-full md:w-80 lg:w-96 glass-panel h-auto md:h-full flex flex-col p-5 gap-4 overflow-visible md:overflow-y-auto shrink-0 z-10">
       <div class="mb-1">
         <span class="text-brand-cyan font-mono text-xs tracking-widest uppercase font-semibold">EJERCICIO 03</span>
         <h2 class="text-2xl font-bold text-white mt-0.5">Herencia Simple</h2>
@@ -152,7 +164,7 @@
     </aside>
 
     <!-- Columna 2: Sandbox Interactivo (Main Canvas) -->
-    <section class="flex-1 glass-panel h-full flex flex-col relative z-20 shadow-[0_0_30px_rgba(0,0,0,0.5)] overflow-y-auto">
+    <section class="flex-1 glass-panel h-auto md:h-full flex flex-col relative z-20 shadow-[0_0_30px_rgba(0,0,0,0.5)] overflow-visible md:overflow-y-auto">
       
       <!-- Context Header -->
       <div class="p-4 border-b border-white/10 flex justify-between items-center bg-[#121927]/60">
@@ -181,9 +193,9 @@
 
           <!-- Contenedor del Coche Neón -->
           <div class="w-full aspect-[16/9] md:aspect-[2/1] rounded-2xl border border-white/10 overflow-hidden relative shadow-2xl border-glow-cyan bg-[#050B14] flex items-center justify-center">
-            <img class="w-full h-full object-cover mix-blend-screen opacity-95" 
-                 alt="Futuristic glowing neon cyan supercar" 
-                 src="https://lh3.googleusercontent.com/aida/AEtjO1X1BrMvWhr317Yso-MOC9tRMmbfrzXk7qBAw_8N2ZPO9GWXJXN-f20scqFgVY-jV_qQY7jJcVrHexSaymbouiuTykDd2fnH-CbPQsdrdNSdRsL4LaLHLLlvGtwvPE3GVShQUO79ISokR0QzE9hgVxsSIV5Z2oBB-Fz3zx59_U1Y0lChI7aeyRbGK9KJknXDTLC4f6ynLq9I5CS2h_MQrR59t3qiH2ArpuSLoe4SUBCZawlIg7xeGjOCctuq" />
+            <img class="w-full h-full object-cover mix-blend-screen opacity-95"
+                 alt="Futuristic glowing neon cyan supercar"
+                 src="{{ coche_img or '/static/img/coche_neon.jpg' }}" />
           </div>
         </div>
 
@@ -229,7 +241,7 @@
     </section>
 
     <!-- Columna 3: Inspector / Terminal (Sidebar Derecho) -->
-    <aside class="w-full md:w-80 lg:w-[400px] glass-panel h-full flex flex-col shrink-0 z-10 border-l border-white/10">
+    <aside class="w-full md:w-80 lg:w-[400px] glass-panel h-[70vh] md:h-full flex flex-col shrink-0 z-10 border-l border-white/10">
       
       <!-- Pestañas Superiores -->
       <div class="flex p-2 bg-[#121927]/60 border-b border-white/10 gap-2">

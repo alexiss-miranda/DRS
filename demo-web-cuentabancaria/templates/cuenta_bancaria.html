@@ -42,15 +42,15 @@
     }
   </style>
 </head>
-<body class="font-sans h-screen overflow-hidden flex flex-col">
+<body class="font-sans min-h-screen overflow-y-auto flex flex-col lg:h-screen lg:overflow-hidden">
 
   <!-- TopNavBar -->
   <header class="h-16 border-b border-[#1e293b] bg-[#0b101b]/95 backdrop-blur-xl px-6 flex items-center justify-between z-50">
     <div class="flex items-center gap-3">
       <span class="font-bold text-lg text-white tracking-tight">MR22058 DRS GUIA 1</span>
     </div>
-    
-    <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+
+    <nav class="hidden lg:flex items-center gap-8 text-sm font-medium">
       <a href="/cuenta-bancaria" class="text-brand-cyan font-semibold flex items-center gap-2 border-b-2 border-brand-cyan pb-1">
         <span class="w-1.5 h-1.5 rounded-full bg-brand-cyan shadow-[0_0_8px_#00e5ff]"></span>
         Abstracción
@@ -60,20 +60,32 @@
       <a href="/animales" class="text-brand-muted hover:text-white transition-colors">Polimorfismo</a>
       <a href="/herencia-multinivel" class="text-brand-muted hover:text-white transition-colors">Herencia Multinivel</a>
     </nav>
-    
+
     <div class="flex items-center gap-4">
-      <span class="text-xs font-mono text-brand-green bg-brand-green/10 border border-brand-green/30 px-3 py-1 rounded-full flex items-center gap-1.5">
+      <span class="hidden sm:flex text-xs font-mono text-brand-green bg-brand-green/10 border border-brand-green/30 px-3 py-1 rounded-full items-center gap-1.5">
         <span class="w-2 h-2 rounded-full bg-brand-green animate-pulse"></span>
         Flask API: Online (200 OK)
       </span>
       <button class="text-brand-muted hover:text-white transition-colors p-1">
         <span class="material-symbols-outlined text-xl">dark_mode</span>
       </button>
+      <button class="lg:hidden text-white p-1" aria-label="Abrir menú" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+        <span class="material-symbols-outlined text-xl">menu</span>
+      </button>
     </div>
   </header>
 
+  <!-- Menú móvil -->
+  <nav id="mobile-menu" class="hidden lg:hidden bg-[#0b101b] border-b border-[#1e293b] px-6 py-3 text-sm font-medium">
+    <a href="/cuenta-bancaria" class="block py-2 text-brand-cyan font-semibold">Abstracción</a>
+    <a href="/empleado" class="block py-2 text-brand-muted hover:text-white">Encapsulación</a>
+    <a href="/vehiculo" class="block py-2 text-brand-muted hover:text-white">Herencia</a>
+    <a href="/animales" class="block py-2 text-brand-muted hover:text-white">Polimorfismo</a>
+    <a href="/herencia-multinivel" class="block py-2 text-brand-muted hover:text-white">Herencia Multinivel</a>
+  </nav>
+
   <!-- Workspace Grid (3 Columnas) -->
-  <main class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-px bg-[#1e293b]/40 overflow-hidden">
+  <main class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-px bg-[#1e293b]/40 overflow-visible lg:overflow-hidden">
     
     <!-- Columna 1: Teoría & UML -->
     <section class="lg:col-span-3 bg-[#0b101b] p-6 overflow-y-auto flex flex-col gap-5 border-r border-[#1e293b]">
@@ -164,7 +176,7 @@
     </section>
 
     <!-- Columna 3: Código & Terminal -->
-    <section class="lg:col-span-4 bg-[#0b101b] flex flex-col h-full overflow-hidden">
+    <section class="lg:col-span-4 bg-[#0b101b] flex flex-col h-[70vh] lg:h-full overflow-hidden">
       <div class="flex border-b border-[#1e293b] bg-[#0b101b]">
         <button id="tab-code-btn" onclick="switchTab('code')" class="flex-1 py-3 text-xs font-mono font-semibold text-white border-b-2 border-brand-cyan bg-[#121927] flex items-center justify-center gap-2">
           <span class="material-symbols-outlined text-sm">code</span> Código Python
