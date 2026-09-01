@@ -1,8 +1,9 @@
+import base64
 import os
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
 
-from flask import Flask, jsonify, render_template, request, session
+from flask import Flask, jsonify, render_template, request, send_file, session
 
 import animal_multinivel as ej5
 import animal_polimorfismo as ej4
@@ -19,6 +20,25 @@ app = Flask(
     static_url_path="/static"
 )
 app.secret_key = os.environ.get("SECRET_KEY", "clave-de-desarrollo-no-usar-en-produccion")
+
+# Cargar imágenes en Base64 para garantizar 100% de disponibilidad en Vercel Serverless
+def _cargar_data_uri(nombre_archivo: str) -> str:
+    for ruta in [
+        BASE_DIR / "static" / "img" / nombre_archivo,
+        BASE_DIR.parent / "static" / "img" / nombre_archivo,
+        Path("/var/task/demo-web-cuentabancaria/static/img") / nombre_archivo,
+        Path("/var/task/static/img") / nombre_archivo,
+    ]:
+        if ruta.exists():
+            try:
+                with open(ruta, "rb") as f:
+                    return f"data:image/jpeg;base64,{base64.b64encode(f.read()).decode('utf-8')}"
+            except Exception:
+                pass
+    return f"/static/img/{nombre_archivo}"
+
+PERRO_DATA_URI = _cargar_data_uri("perro_cybernetico.jpg")
+GATO_DATA_URI = _cargar_data_uri("gato_cybernetico.jpg")
 
 DOS_DECIMALES = Decimal("0.01")
 
@@ -148,6 +168,20 @@ def api_vehiculo_accion():
     return jsonify(mensaje=metodo())
 
 
+@app.route("/static/img/<path:filename>")
+def serve_image(filename):
+    for folder in [
+        BASE_DIR / "static" / "img",
+        BASE_DIR.parent / "static" / "img",
+        Path("/var/task/demo-web-cuentabancaria/static/img"),
+        Path("/var/task/static/img"),
+    ]:
+        file_path = folder / filename
+        if file_path.exists():
+            return send_file(str(file_path), mimetype="image/jpeg")
+    return ("Image not found", 404)
+
+
 # ---------------------------------------------------------------------------
 # Ejercicio 4 — Polimorfismo (Animal / Perro / Gato)
 # ---------------------------------------------------------------------------
@@ -155,7 +189,11 @@ def api_vehiculo_accion():
 
 @app.route("/animales")
 def animales_view():
-    return render_template("animales.html")
+    return render_template(
+        "animales.html",
+        perro_img=PERRO_DATA_URI,
+        gato_img=GATO_DATA_URI
+    )
 
 
 @app.route("/api/animales/sonido", methods=["POST"])
@@ -177,7 +215,10 @@ def api_animales_sonido():
 
 @app.route("/herencia-multinivel")
 def multinivel_view():
-    return render_template("herencia_multinivel.html")
+    return render_template(
+        "herencia_multinivel.html",
+        perro_img=PERRO_DATA_URI
+    )
 
 
 @app.route("/api/herencia-multinivel/accion", methods=["POST"])
