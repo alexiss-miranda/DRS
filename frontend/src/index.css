@@ -69,3 +69,9 @@ body {
 .animate-count-flash {
   animation: count-flash 0.25s ease-out;
 }
+
+/* Quick light-mode toggle: invert lightness while restoring hue, so the
+   dark palette flips to a light one without a parallel light theme. */
+.theme-light {
+  filter: invert(1) hue-rotate(180deg);
+}

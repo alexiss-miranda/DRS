@@ -1,7 +1,7 @@
 import os
 from decimal import Decimal, InvalidOperation
 
-from flask import Flask, jsonify, request, session
+from flask import Flask, jsonify, render_template, request, session
 
 import animal_multinivel as ej5
 import animal_polimorfismo as ej4
@@ -41,6 +41,12 @@ def api_health():
 # ---------------------------------------------------------------------------
 # Ejercicio 1 — Abstracción de datos (CuentaBancaria)
 # ---------------------------------------------------------------------------
+
+
+@app.route("/")
+@app.route("/cuenta-bancaria")
+def cuenta_bancaria_view():
+    return render_template("cuenta_bancaria.html")
 
 
 @app.route("/api/cuenta-bancaria/saldo")
@@ -86,6 +92,11 @@ def reiniciar():
 # ---------------------------------------------------------------------------
 
 
+@app.route("/empleado")
+def empleado_view():
+    return render_template("empleado.html")
+
+
 @app.route("/api/empleado", methods=["POST"])
 def api_empleado():
     data = request.get_json(silent=True) or {}
@@ -109,6 +120,11 @@ def api_empleado():
 # ---------------------------------------------------------------------------
 
 
+@app.route("/vehiculo")
+def vehiculo_view():
+    return render_template("vehiculo.html")
+
+
 @app.route("/api/vehiculo/accion", methods=["POST"])
 def api_vehiculo_accion():
     data = request.get_json(silent=True) or {}
@@ -129,6 +145,11 @@ def api_vehiculo_accion():
 # ---------------------------------------------------------------------------
 
 
+@app.route("/animales")
+def animales_view():
+    return render_template("animales.html")
+
+
 @app.route("/api/animales/sonido", methods=["POST"])
 def api_animales_sonido():
     data = request.get_json(silent=True) or {}
@@ -146,6 +167,11 @@ def api_animales_sonido():
 # ---------------------------------------------------------------------------
 
 
+@app.route("/herencia-multinivel")
+def multinivel_view():
+    return render_template("herencia_multinivel.html")
+
+
 @app.route("/api/herencia-multinivel/accion", methods=["POST"])
 def api_multinivel_accion():
     data = request.get_json(silent=True) or {}
@@ -155,3 +181,8 @@ def api_multinivel_accion():
     if metodo is None:
         return jsonify(error="Acción no reconocida"), 400
     return jsonify(mensaje=metodo())
+
+
+if __name__ == "__main__":
+    app.run(debug=True, port=5000)
+

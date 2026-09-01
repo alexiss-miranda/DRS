@@ -1,34 +1,60 @@
-function ClassBox({ nombre, atributos = [], metodos = [], accent = false }) {
+import { Braces, Lock } from "lucide-react";
+
+function ClassBox({ nombre, pythonVersion, atributos = [], metodos = [], accent = false }) {
   return (
     <div
-      className={`overflow-hidden rounded-lg border ${
+      className={`overflow-hidden rounded-lg border bg-black/20 ${
         accent ? "border-[#8083FF]/40" : "border-white/10"
-      } bg-black/20`}
+      }`}
     >
-      <div
-        className={`border-b px-3 py-2 text-center font-mono text-xs font-semibold ${
-          accent
-            ? "border-[#8083FF]/40 bg-[#494BD6]/20 text-[#c7c8ff]"
-            : "border-white/10 bg-white/5 text-white/90"
-        }`}
-      >
-        {nombre}
+      <div className="flex items-center justify-between border-b border-white/10 px-3 py-2.5">
+        <div className="flex items-center gap-2">
+          <Braces size={14} className="text-[#8083FF]" />
+          <span className="font-mono text-sm font-semibold text-white">class {nombre}</span>
+        </div>
+        {pythonVersion && (
+          <span className="rounded-md bg-white/5 px-2 py-0.5 text-[10px] font-medium text-white/40">
+            PYTHON {pythonVersion}
+          </span>
+        )}
       </div>
+
       {atributos.length > 0 && (
-        <div className="space-y-1 border-b border-white/10 px-3 py-2">
-          {atributos.map((a, i) => (
-            <div key={i} className="font-mono text-[11px] text-white/60">
-              <span className="text-[#8083FF]">{a.visibilidad}</span> {a.texto}
+        <div className="border-b border-white/10 px-3 py-2.5">
+          <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-white/30">
+            Atributos
+          </p>
+          <div className="space-y-1.5">
+            {atributos.map((a, i) => (
+              <div key={i} className="flex items-center justify-between gap-2">
+                <span className="font-mono text-xs text-white/70">
+                  <span className="text-[#8083FF]">{a.visibilidad}</span> {a.texto}
+                </span>
+                {a.oculto && (
+                  <span className="flex shrink-0 items-center gap-1 rounded-md bg-red-500/10 px-1.5 py-0.5 text-[10px] text-red-300">
+                    Oculto <Lock size={10} />
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div className="px-3 py-2.5">
+        <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-white/30">
+          Métodos
+        </p>
+        <div className="space-y-2">
+          {metodos.map((m, i) => (
+            <div key={i} className="font-mono text-xs">
+              <div className="text-white/80">
+                <span className="text-[#10B981]">{m.visibilidad}</span> {m.texto}
+              </div>
+              {m.retorno && <div className="pl-3 text-white/30">→ {m.retorno}</div>}
             </div>
           ))}
         </div>
-      )}
-      <div className="space-y-1 px-3 py-2">
-        {metodos.map((m, i) => (
-          <div key={i} className="font-mono text-[11px] text-white/70">
-            <span className="text-[#10B981]">{m.visibilidad}</span> {m.texto}
-          </div>
-        ))}
       </div>
     </div>
   );

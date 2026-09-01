@@ -3,18 +3,28 @@ export const EXERCISES = [
     slug: "cuenta-bancaria",
     numero: 1,
     titulo: "Abstracción",
-    tituloLargo: "Abstracción de Datos",
+    tituloLargo: "Principio de Abstracción",
+    archivo: "cuenta_bancaria.py",
     resumen:
-      "Ocultar los detalles de implementación complejos y mostrar solo las características esenciales del objeto al mundo exterior.",
+      "La abstracción consiste en ocultar los detalles de implementación y exponer solo la funcionalidad esencial al usuario. En este ejercicio, el usuario no necesita saber cómo se calcula el saldo internamente, solo interactúa con los métodos definidos.",
+    encapsulamiento: {
+      titulo: "Encapsulamiento Estricto",
+      texto: "El atributo _saldo está protegido. No debe modificarse directamente desde fuera de la clase.",
+    },
     uml: {
       nombre: "CuentaBancaria",
-      atributos: [{ visibilidad: "-", texto: "saldo: Decimal" }],
+      pythonVersion: "3.10",
+      atributos: [{ visibilidad: "-", texto: "_saldo: Decimal", oculto: true }],
       metodos: [
-        { visibilidad: "+", texto: "depositar(monto)" },
-        { visibilidad: "+", texto: "retirar(monto)" },
-        { visibilidad: "+", texto: "obtener_saldo()" },
+        { visibilidad: "+", texto: "depositar(monto: Decimal)", retorno: "None" },
+        { visibilidad: "+", texto: "retirar(monto: Decimal)", retorno: "None" },
+        { visibilidad: "+", texto: "obtener_saldo()", retorno: "Decimal" },
       ],
     },
+    excepciones: [
+      { nombre: "SaldoInsuficienteError", texto: "Al intentar retirar más del saldo disponible." },
+      { nombre: "ValueError", texto: "Si el monto de depósito/retiro es negativo o cero." },
+    ],
     source: `class SaldoInsuficienteError(Exception):
     """Se lanza al intentar retirar un monto mayor al saldo disponible."""
 
@@ -54,20 +64,29 @@ class CuentaBancaria:
     slug: "empleado",
     numero: 2,
     titulo: "Encapsulación",
-    tituloLargo: "Encapsulación",
+    tituloLargo: "Principio de Encapsulación",
+    archivo: "empleado.py",
     resumen:
-      "Restringir el acceso directo a los atributos de un objeto y exponerlos solo a través de propiedades que validan cada valor asignado.",
+      "Restringir el acceso directo a los atributos de un objeto y exponerlos solo a través de propiedades (getters/setters) que validan cada valor antes de asignarlo.",
+    encapsulamiento: {
+      titulo: "Propiedades con Validación",
+      texto: "nombre y edad se guardan en atributos privados; las propiedades públicas son el único camino para leerlos o modificarlos.",
+    },
     uml: {
       nombre: "Empleado",
+      pythonVersion: "3.10",
       atributos: [
-        { visibilidad: "-", texto: "nombre: str" },
-        { visibilidad: "-", texto: "edad: int" },
+        { visibilidad: "-", texto: "_nombre: str", oculto: true },
+        { visibilidad: "-", texto: "_edad: int", oculto: true },
       ],
       metodos: [
-        { visibilidad: "+", texto: "nombre (getter/setter)" },
-        { visibilidad: "+", texto: "edad (getter/setter)" },
+        { visibilidad: "+", texto: "nombre", retorno: "str (property)" },
+        { visibilidad: "+", texto: "edad", retorno: "int (property)" },
       ],
     },
+    excepciones: [
+      { nombre: "ValueError", texto: "Si el nombre está vacío, o la edad no está entre 1 y 99." },
+    ],
     source: `class Empleado:
     """Encapsula los datos de un empleado.
 
@@ -104,20 +123,22 @@ class CuentaBancaria:
     slug: "vehiculo",
     numero: 3,
     titulo: "Herencia",
-    tituloLargo: "Herencia Simple",
+    tituloLargo: "Principio de Herencia Simple",
+    archivo: "vehiculo.py",
     resumen:
-      "Una clase (Coche) reutiliza el comportamiento de otra (Vehiculo) mediante herencia, y añade su propio comportamiento especializado.",
+      "Una clase (Coche) reutiliza el comportamiento de otra (Vehiculo) mediante herencia, y añade su propio comportamiento especializado sin reescribir lo heredado.",
     uml: {
       nombre: "Vehiculo",
+      pythonVersion: "3.10",
       atributos: [],
       metodos: [
-        { visibilidad: "+", texto: "arrancar()" },
-        { visibilidad: "+", texto: "detener()" },
+        { visibilidad: "+", texto: "arrancar()", retorno: "str" },
+        { visibilidad: "+", texto: "detener()", retorno: "str" },
       ],
       hijo: {
         nombre: "Coche",
         atributos: [],
-        metodos: [{ visibilidad: "+", texto: "conducir()" }],
+        metodos: [{ visibilidad: "+", texto: "conducir()", retorno: "str" }],
       },
     },
     source: `class Vehiculo:
@@ -142,16 +163,18 @@ class Coche(Vehiculo):
     slug: "animales",
     numero: 4,
     titulo: "Polimorfismo",
-    tituloLargo: "Polimorfismo",
+    tituloLargo: "Principio de Polimorfismo",
+    archivo: "animal_polimorfismo.py",
     resumen:
-      "Una misma referencia de tipo Animal invoca hacer_sonido(); el comportamiento real depende de la subclase concreta detrás del objeto.",
+      "Una misma referencia de tipo Animal invoca hacer_sonido(); el comportamiento real depende de la subclase concreta detrás del objeto en tiempo de ejecución.",
     uml: {
       nombre: "Animal",
+      pythonVersion: "3.10",
       atributos: [],
-      metodos: [{ visibilidad: "+", texto: "hacer_sonido()" }],
+      metodos: [{ visibilidad: "+", texto: "hacer_sonido()", retorno: "str" }],
       hermanos: [
-        { nombre: "Perro", metodos: [{ visibilidad: "+", texto: "hacer_sonido()" }] },
-        { nombre: "Gato", metodos: [{ visibilidad: "+", texto: "hacer_sonido()" }] },
+        { nombre: "Perro", metodos: [{ visibilidad: "+", texto: "hacer_sonido()", retorno: "str" }] },
+        { nombre: "Gato", metodos: [{ visibilidad: "+", texto: "hacer_sonido()", retorno: "str" }] },
       ],
     },
     source: `class Animal:
@@ -176,23 +199,25 @@ class Gato(Animal):
     slug: "herencia-multinivel",
     numero: 5,
     titulo: "Multinivel",
-    tituloLargo: "Herencia Multinivel",
+    tituloLargo: "Principio de Herencia Multinivel",
+    archivo: "animal_multinivel.py",
     resumen:
       "Perro hereda de Mamifero, que a su vez hereda de Animal. Perro sobrescribe hacer_sonido() y hereda alimentar() sin redefinirlo.",
     uml: {
       nombre: "Animal",
+      pythonVersion: "3.10",
       atributos: [],
-      metodos: [{ visibilidad: "+", texto: "hacer_sonido()" }],
+      metodos: [{ visibilidad: "+", texto: "hacer_sonido()", retorno: "str" }],
       cadena: [
         {
           nombre: "Mamifero",
           atributos: [],
-          metodos: [{ visibilidad: "+", texto: "alimentar()" }],
+          metodos: [{ visibilidad: "+", texto: "alimentar()", retorno: "str" }],
         },
         {
           nombre: "Perro",
           atributos: [],
-          metodos: [{ visibilidad: "+", texto: "hacer_sonido()" }],
+          metodos: [{ visibilidad: "+", texto: "hacer_sonido()", retorno: "str" }],
         },
       ],
     },

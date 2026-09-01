@@ -13,7 +13,7 @@ const SANDBOXES = {
   "herencia-multinivel": MultinivelSandbox,
 };
 
-export default function SandboxContainer({ slug, onLog }) {
+export default function SandboxContainer({ slug, onLog, resetSignal }) {
   const Sandbox = SANDBOXES[slug] ?? CuentaBancariaSandbox;
 
   return (
@@ -22,7 +22,7 @@ export default function SandboxContainer({ slug, onLog }) {
         <PuzzleIcon size={18} className="text-[#8083FF]" />
         <h2 className="text-base font-semibold">Simulador Interactivo</h2>
       </div>
-      <Sandbox onLog={onLog} />
+      <Sandbox onLog={onLog} resetSignal={resetSignal} />
     </div>
   );
 }

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>DRS POO Studio — Ejercicio 01: Abstracción de Datos</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+  
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              dark: "#0b101b",
+              card: "#121927",
+              border: "#1e293b",
+              cyan: "#00e5ff",
+              purple: "#7c3aed",
+              green: "#10b981",
+              text: "#e2e8f0",
+              muted: "#94a3b8"
+            }
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+            mono: ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    body { background-color: #0b101b; color: #e2e8f0; }
+    .glass-card {
+      background-color: #121927;
+      border: 1px solid #1e293b;
+    }
+  </style>
+</head>
+<body class="font-sans h-screen overflow-hidden flex flex-col">
+
+  <!-- TopNavBar -->
+  <header class="h-16 border-b border-[#1e293b] bg-[#0b101b]/95 backdrop-blur-xl px-6 flex items-center justify-between z-50">
+    <div class="flex items-center gap-3">
+      <span class="font-bold text-lg text-white tracking-tight">DRS POO Studio — Guía 1 POO</span>
+    </div>
+    
+    <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+      <a href="/cuenta-bancaria" class="text-brand-cyan font-semibold flex items-center gap-2 border-b-2 border-brand-cyan pb-1">
+        <span class="w-1.5 h-1.5 rounded-full bg-brand-cyan shadow-[0_0_8px_#00e5ff]"></span>
+        Abstracción
+      </a>
+      <a href="/empleado" class="text-brand-muted hover:text-white transition-colors">Encapsulación</a>
+      <a href="/vehiculo" class="text-brand-muted hover:text-white transition-colors">Herencia</a>
+      <a href="/animales" class="text-brand-muted hover:text-white transition-colors">Polimorfismo</a>
+      <a href="/herencia-multinivel" class="text-brand-muted hover:text-white transition-colors">Herencia Multinivel</a>
+    </nav>
+    
+    <div class="flex items-center gap-4">
+      <span class="text-xs font-mono text-brand-green bg-brand-green/10 border border-brand-green/30 px-3 py-1 rounded-full flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-brand-green animate-pulse"></span>
+        Flask API: Online (200 OK)
+      </span>
+      <button class="text-brand-muted hover:text-white transition-colors p-1">
+        <span class="material-symbols-outlined text-xl">dark_mode</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Workspace Grid (3 Columnas) -->
+  <main class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-px bg-[#1e293b]/40 overflow-hidden">
+    
+    <!-- Columna 1: Teoría & UML -->
+    <section class="lg:col-span-3 bg-[#0b101b] p-6 overflow-y-auto flex flex-col gap-5 border-r border-[#1e293b]">
+      <div>
+        <span class="text-xs font-mono text-brand-cyan uppercase tracking-wider font-semibold">EJERCICIO 01</span>
+        <h1 class="text-2xl font-bold text-white mt-1">Abstracción de Datos</h1>
+      </div>
+
+      <div class="glass-card rounded-xl p-4 border border-[#1e293b]">
+        <h3 class="text-xs font-bold text-white mb-2 flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-brand-cyan text-sm">menu_book</span> Teoría
+        </h3>
+        <p class="text-xs text-brand-muted leading-relaxed">
+          La <strong class="text-white">Abstracción</strong> oculta los detalles internos complejos (como el saldo protegido con <code class="text-brand-cyan">Decimal</code>) y ofrece solo operaciones esenciales (<code class="text-brand-cyan">depositar</code>, <code class="text-brand-cyan">retirar</code>, <code class="text-brand-cyan">obtener_saldo</code>).
+        </p>
+      </div>
+
+      <div class="glass-card rounded-xl p-4 border border-[#1e293b]">
+        <h3 class="text-xs font-bold text-white mb-3 flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-brand-cyan text-sm">schema</span> Diagrama UML
+        </h3>
+        <div class="rounded-lg bg-[#0e1626] border border-[#1e293b] p-3 font-mono text-xs">
+          <div class="text-center font-bold text-brand-cyan pb-2 border-b border-[#1e293b]">
+            class CuentaBancaria
+          </div>
+          <div class="py-2 text-red-400 border-b border-[#1e293b]">
+            - _saldo: Decimal (Oculto 🔒)
+          </div>
+          <div class="pt-2 text-brand-green space-y-1">
+            <div>+ depositar(monto: Decimal)</div>
+            <div>+ retirar(monto: Decimal)</div>
+            <div>+ obtener_saldo() -&gt; Decimal</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Columna 2: Cajero ATM / Sandbox -->
+    <section class="lg:col-span-5 bg-[#0b101b] p-6 overflow-y-auto flex flex-col gap-6 items-center justify-between border-r border-[#1e293b]">
+      <div class="w-full flex items-center justify-between">
+        <h2 class="text-base font-bold text-white flex items-center gap-2">
+          <span class="material-symbols-outlined text-brand-cyan">account_balance</span>
+          Cajero Virtual
+        </h2>
+        <span class="font-mono text-xs bg-[#121927] border border-[#1e293b] px-3 py-1 rounded-full text-brand-cyan">
+          Instancia: <code class="text-white">cuenta = CuentaBancaria()</code>
+        </span>
+      </div>
+
+      <!-- Tarjeta Holográfica Bancaria -->
+      <div class="w-full max-w-sm rounded-2xl glass-card border border-brand-cyan/40 p-6 relative overflow-hidden shadow-[0_0_30px_rgba(0,229,255,0.1)]">
+        <div class="flex justify-between items-start mb-6">
+          <span class="font-mono text-[10px] text-brand-cyan tracking-widest uppercase">DRS BANK — BLACK EDITION</span>
+          <span class="material-symbols-outlined text-brand-cyan">contactless</span>
+        </div>
+        <div class="mb-4">
+          <span class="text-xs text-brand-muted block font-mono">SALDO DISPONIBLE</span>
+          <span id="saldo-display" class="text-4xl font-bold font-mono text-white">$0.00</span>
+          <span class="text-[10px] text-brand-cyan font-mono ml-1">USD</span>
+        </div>
+        <div class="flex justify-between text-[11px] font-mono text-brand-muted border-t border-[#1e293b] pt-3">
+          <span>JUAN PÉREZ</span>
+          <span>CTA: #8821-POO</span>
+        </div>
+      </div>
+
+      <!-- Formulario de Operación -->
+      <div class="w-full max-w-sm flex flex-col gap-3">
+        <div class="flex gap-2">
+          <input id="input-monto" type="number" step="0.01" placeholder="Monto ej. 50.00" class="flex-1 bg-[#070b12] border border-[#1e293b] rounded-xl px-4 py-2.5 text-sm font-mono text-white focus:outline-none focus:border-brand-cyan" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <button onclick="operar('depositar')" class="py-2.5 px-4 rounded-xl bg-gradient-to-r from-brand-green to-emerald-700 hover:opacity-90 text-white font-mono text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-md">
+            <span class="material-symbols-outlined text-sm">add_circle</span> Depositar (+)
+          </button>
+          <button onclick="operar('retirar')" class="py-2.5 px-4 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:opacity-90 text-white font-mono text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-md">
+            <span class="material-symbols-outlined text-sm">remove_circle</span> Retirar (-)
+          </button>
+        </div>
+
+        <button onclick="reiniciarSaldo()" class="text-xs text-brand-muted hover:text-white font-mono underline text-center mt-1">
+          Reiniciar saldo a $0.00
+        </button>
+
+        <div id="toast-banco" class="hidden p-2.5 rounded-lg text-xs font-mono flex items-center gap-2"></div>
+      </div>
+    </section>
+
+    <!-- Columna 3: Código & Terminal -->
+    <section class="lg:col-span-4 bg-[#0b101b] flex flex-col h-full overflow-hidden">
+      <div class="flex border-b border-[#1e293b] bg-[#0b101b]">
+        <button id="tab-code-btn" onclick="switchTab('code')" class="flex-1 py-3 text-xs font-mono font-semibold text-white border-b-2 border-brand-cyan bg-[#121927] flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-sm">code</span> Código Python
+        </button>
+        <button id="tab-term-btn" onclick="switchTab('terminal')" class="flex-1 py-3 text-xs font-mono text-brand-muted hover:text-white transition-colors flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-sm">terminal</span> Logs RPC
+        </button>
+      </div>
+
+      <div id="tab-code" class="flex-1 p-4 font-mono text-xs overflow-y-auto bg-[#070b12] text-brand-muted leading-relaxed">
+<pre><code class="text-[#e2e8f0]"><span class="text-gray-500"># ==========================================
+# EJERCICIO 1: ABSTRACCIÓN
+# Oculta la complejidad interna y expone solo
+# las operaciones esenciales al usuario.
+# ==========================================</span>
+
+<span class="text-brand-purple">class</span> <span class="text-brand-cyan font-bold">CuentaBancaria</span>:
+    <span class="text-gray-500"># 1. Constructor: Inicializa la cuenta con un saldo base</span>
+    <span class="text-brand-purple">def</span> <span class="text-brand-cyan">__init__</span>(<span class="text-white">self</span>, saldo_inicial: <span class="text-brand-cyan">Decimal</span> = <span class="text-brand-green">Decimal</span>(<span class="text-white">"0.00"</span>)):
+        <span class="text-white">self</span>._saldo = saldo_inicial  <span class="text-gray-500"># Estado interno encapsulado</span>
+
+    <span class="text-gray-500"># 2. Depositar: Valida la regla (monto > 0) y actualiza</span>
+    <span class="text-brand-purple">def</span> <span class="text-brand-cyan">depositar</span>(<span class="text-white">self</span>, monto: <span class="text-brand-cyan">Decimal</span>) -&gt; <span class="text-white">None</span>:
+        <span class="text-brand-purple">if</span> monto &lt;= <span class="text-white">0</span>:
+            <span class="text-brand-purple">raise</span> <span class="text-red-400">ValueError</span>(<span class="text-brand-green">"El monto a depositar debe ser positivo"</span>)
+        <span class="text-white">self</span>._saldo += monto
+
+    <span class="text-gray-500"># 3. Retirar: Valida que haya saldo suficiente antes de descontar</span>
+    <span class="text-brand-purple">def</span> <span class="text-brand-cyan">retirar</span>(<span class="text-white">self</span>, monto: <span class="text-brand-cyan">Decimal</span>) -&gt; <span class="text-white">None</span>:
+        <span class="text-brand-purple">if</span> monto &gt; <span class="text-white">self</span>._saldo:
+            <span class="text-brand-purple">raise</span> <span class="text-red-400">SaldoInsuficienteError</span>(<span class="text-brand-green">"Fondos insuficientes para el retiro"</span>)
+        <span class="text-white">self</span>._saldo -= monto
+
+    <span class="text-gray-500"># 4. Obtener saldo: Consulta el saldo actual de forma segura</span>
+    <span class="text-brand-purple">def</span> <span class="text-brand-cyan">obtener_saldo</span>(<span class="text-white">self</span>) -&gt; <span class="text-brand-cyan">Decimal</span>:
+        <span class="text-brand-purple">return</span> <span class="text-white">self</span>._saldo</code></pre>
+      </div>
+
+      <div id="tab-terminal" class="hidden flex-1 p-4 font-mono text-xs overflow-y-auto bg-[#050505] space-y-3">
+        <div class="text-brand-muted/50 pb-2 border-b border-[#1e293b]/60 flex justify-between items-center text-[10px]">
+          <span>TERMINAL / REGISTRO RPC</span>
+          <span class="text-brand-green">● ACTIVO</span>
+        </div>
+        <div id="term-logs" class="space-y-2">
+          <div class="text-brand-muted/60">
+            [INICIO] Servidor Flask inicializado. Cuenta bancaria lista con Abstracción.
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    async function cargarSaldoInicial() {
+      try {
+        const res = await fetch('/api/cuenta-bancaria/saldo');
+        const data = await res.json();
+        document.getElementById('saldo-display').textContent = '$' + data.saldo;
+      } catch (e) {}
+    }
+    cargarSaldoInicial();
+
+    function switchTab(tab) {
+      const codePanel = document.getElementById("tab-code");
+      const termPanel = document.getElementById("tab-terminal");
+      const codeBtn = document.getElementById("tab-code-btn");
+      const termBtn = document.getElementById("tab-term-btn");
+
+      if (tab === 'code') {
+        codePanel.classList.remove("hidden");
+        termPanel.classList.add("hidden");
+        codeBtn.className = "flex-1 py-3 text-xs font-mono font-semibold text-white border-b-2 border-brand-cyan bg-[#121927] flex items-center justify-center gap-2";
+        termBtn.className = "flex-1 py-3 text-xs font-mono text-brand-muted hover:text-white transition-colors flex items-center justify-center gap-2";
+      } else {
+        codePanel.classList.add("hidden");
+        termPanel.classList.remove("hidden");
+        termBtn.className = "flex-1 py-3 text-xs font-mono font-semibold text-white border-b-2 border-brand-cyan bg-[#121927] flex items-center justify-center gap-2";
+        codeBtn.className = "flex-1 py-3 text-xs font-mono text-brand-muted hover:text-white transition-colors flex items-center justify-center gap-2";
+      }
+    }
+
+    function logTerm(operacion, monto, status, msg, isError) {
+      const term = document.getElementById('term-logs');
+      const entry = document.createElement('div');
+      entry.className = "pt-2 border-t border-[#1e293b]/60 text-xs space-y-1";
+      const explicacion = operacion === 'depositar'
+        ? 'Invocando cuenta.depositar(monto) &rarr; Validación positiva OK &rarr; Saldo incrementado.'
+        : 'Invocando cuenta.retirar(monto) &rarr; Verificación de fondos OK &rarr; Saldo debitado.';
+      entry.innerHTML = `
+        <div><span class="${isError ? 'text-red-400 font-bold' : 'text-brand-cyan font-bold'}">POST</span> /api/operar <span class="text-white">{"operacion":"${operacion}", "monto":"${monto}"}</span></div>
+        <div class="pl-3 border-l-2 ${isError ? 'border-red-500/40 text-red-400 bg-red-900/10 p-1.5' : 'border-brand-green/40 text-brand-muted text-[11px]'}">
+          ${isError ? `❌ <b>Error:</b> ${msg}` : `&gt; <b>Abstracción:</b> ${explicacion}<br/><span class="text-brand-green font-bold">&rarr; 200 OK:</span> Nuevo saldo: <b>$${msg}</b>`}
+        </div>
+      `;
+      term.appendChild(entry);
+      term.scrollTop = term.scrollHeight;
+    }
+
+    async function operar(tipo) {
+      const monto = document.getElementById('input-monto').value;
+      const toast = document.getElementById('toast-banco');
+
+      try {
+        const res = await fetch('/api/operar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ operacion: tipo, monto })
+        });
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.error || 'Error en la operación');
+
+        document.getElementById('saldo-display').textContent = '$' + data.saldo;
+        toast.className = "p-2.5 rounded-lg text-xs font-mono flex items-center gap-2 bg-brand-green/20 border border-brand-green/30 text-brand-green";
+        toast.textContent = `Operación ${tipo} de $${monto} completada con éxito.`;
+        logTerm(tipo, monto, 200, data.saldo, false);
+      } catch (err) {
+        toast.className = "p-2.5 rounded-lg text-xs font-mono flex items-center gap-2 bg-red-900/20 border border-red-500/30 text-red-400";
+        toast.textContent = err.message;
+        logTerm(tipo, monto, 400, err.message, true);
+      } finally {
+        toast.classList.remove('hidden');
+      }
+    }
+
+    async function reiniciarSaldo() {
+      await fetch('/api/reiniciar', { method: 'POST' });
+      document.getElementById('saldo-display').textContent = '$0.00';
+    }
+  </script>
+</body>
+</html>
