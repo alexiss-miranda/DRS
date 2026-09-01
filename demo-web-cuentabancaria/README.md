@@ -1,19 +1,21 @@
 # Demo web — Guía 1 (Python + Flask)
 
 Extra opcional (no forma parte de la rúbrica de la guía): una reimplementación en Python de
-las clases de los 5 ejercicios, cada una con su propia vista web interactiva, lista para
-desplegarse en Vercel como un único sitio.
+las clases de los 5 ejercicios, expuestas como API JSON. La interfaz (**DRS POO Studio**) vive
+aparte, en [`../frontend/`](../frontend), como una SPA de React que consume estos endpoints.
 
-## Rutas
+## Endpoints
 
-| Ruta | Ejercicio | Clases |
+| Endpoint | Ejercicio | Clases |
 |---|---|---|
-| `/` | — | Índice con enlaces a los 5 ejercicios |
-| `/cuenta-bancaria` | 1 — Abstracción de datos | `CuentaBancaria` |
-| `/empleado` | 2 — Encapsulación | `Empleado` |
-| `/vehiculo` | 3 — Herencia simple | `Vehiculo`, `Coche` |
-| `/animales` | 4 — Polimorfismo | `Animal`, `Perro`, `Gato` |
-| `/herencia-multinivel` | 5 — Herencia multinivel | `Animal`, `Mamifero`, `Perro` |
+| `GET /api/health` | — | Estado del servidor |
+| `GET /api/cuenta-bancaria/saldo` | 1 — Abstracción de datos | `CuentaBancaria` |
+| `POST /api/operar` | 1 — Abstracción de datos | `CuentaBancaria` |
+| `POST /api/reiniciar` | 1 — Abstracción de datos | `CuentaBancaria` |
+| `POST /api/empleado` | 2 — Encapsulación | `Empleado` |
+| `POST /api/vehiculo/accion` | 3 — Herencia simple | `Vehiculo`, `Coche` |
+| `POST /api/animales/sonido` | 4 — Polimorfismo | `Animal`, `Perro`, `Gato` |
+| `POST /api/herencia-multinivel/accion` | 5 — Herencia multinivel | `Animal`, `Mamifero`, `Perro` |
 
 ## Por qué esta estructura
 
@@ -39,13 +41,16 @@ desplegarse en Vercel como un único sitio.
   lado del servidor. Las demás vistas (Empleado, Vehiculo/Coche, Animal/Perro/Gato,
   jerarquía multinivel) no necesitan estado entre peticiones: cada clic crea la instancia
   correspondiente, ejecuta el método pedido y devuelve el resultado.
-- **HTML/CSS/JS inline en `app.py`**: para una interfaz tan pequeña, evita depender de la
-  carpeta `public/` de Vercel o de la configuración de `static_folder` de Flask (que Vercel
-  pide no usar para estáticos).
+- **`app.py` sin vistas HTML**: expone solo endpoints JSON. La interfaz vive en
+  [`../frontend/`](../frontend) (React + Vite + Tailwind) y habla con este backend por
+  `fetch`; en local, el dev server de Vite hace de proxy de `/api` hacia Flask (ver
+  `frontend/vite.config.js`), y en producción ambos se sirven desde el mismo dominio de
+  Vercel (ver `vercel.json` en la raíz del repo).
 
 ## Ejecutar en local
 
-Requiere Python 3.12+.
+Requiere Python 3.12+. Este backend solo sirve la API — para ver la interfaz hay que correrlo
+junto al frontend (ver [`../frontend/README.md`](../frontend/README.md)).
 
 ```bash
 python -m venv .venv
@@ -53,22 +58,16 @@ python -m venv .venv
 # source .venv/bin/activate   # Linux/macOS
 
 pip install -r requirements-dev.txt
-```
 
-El código no llama a `app.run()` porque Vercel importa la variable `app` directamente en producción. Para levantar un servidor local, usa el [Vercel CLI](https://vercel.com/docs/cli) (recomendado, porque simula el entorno de Vercel):
-
-```bash
-npm i -g vercel
-vercel dev
-```
-
-O, si prefieres el servidor de desarrollo normal de Flask sin instalar el CLI de Vercel:
-
-```bash
 set FLASK_APP=app.py            # Windows (cmd)
 $env:FLASK_APP = "app.py"       # Windows (PowerShell)
-flask run --debug
+# export FLASK_APP=app.py       # Linux/macOS
+
+flask run --debug   # levanta la API en http://127.0.0.1:5000
 ```
+
+En otra terminal, dentro de `frontend/`, corre `npm run dev` — su servidor de Vite hace
+proxy de `/api` hacia `http://127.0.0.1:5000` (configurado en `frontend/vite.config.js`).
 
 ## Correr las pruebas
 
@@ -79,9 +78,19 @@ pytest
 
 ## Desplegar en Vercel
 
-1. Sube este repositorio a GitHub (ya lo tienes en `mr22058-guia1-drs`).
-2. En [vercel.com/new](https://vercel.com/new), importa el repositorio.
-3. En **Root Directory**, selecciona `demo-web-cuentabancaria` (porque el repo tiene más carpetas además de esta).
-4. Vercel detecta `requirements.txt` y el entrypoint `app.py` automáticamente — no se necesita configuración adicional. El deploy expone las 5 vistas listadas arriba a partir de la URL raíz.
-5. (Opcional pero recomendado) En **Environment Variables**, agrega `SECRET_KEY` con un valor aleatorio propio, para no depender del valor de desarrollo incluido en el código.
-6. Deploy.
+El despliegue es un único proyecto de Vercel para todo el repo (no se elige un Root
+Directory), configurado por el `vercel.json` de la raíz:
+
+- `api/handler.py` (build `@vercel/python`) importa `app` desde este `app.py` y sirve todas
+  las rutas `/api/*`.
+- `frontend/` (build `@vercel/static-build`) compila la SPA de React y sirve el resto de
+  rutas.
+
+Pasos:
+
+1. Sube el repositorio a GitHub (ya lo tienes en `mr22058-guia1-drs`).
+2. En [vercel.com/new](https://vercel.com/new), importa el repositorio con el **Root
+   Directory** por defecto (la raíz del repo, no esta carpeta).
+3. (Opcional pero recomendado) En **Environment Variables**, agrega `SECRET_KEY` con un
+   valor aleatorio propio, para no depender del valor de desarrollo incluido en el código.
+4. Deploy.

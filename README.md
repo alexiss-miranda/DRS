@@ -36,5 +36,8 @@ Instrucciones específicas de cada ejercicio (enunciado, decisiones de diseño) 
 
 | Extra | Tema | Carpeta |
 |---|---|---|
-| Demo web | Reimplementación de los 5 ejercicios con una vista web por ejercicio (Flask), desplegable en Vercel | [`demo-web-cuentabancaria/`](./demo-web-cuentabancaria) |
+| Demo web — backend | API JSON (Flask) que reimplementa los 5 ejercicios | [`demo-web-cuentabancaria/`](./demo-web-cuentabancaria) |
+| Demo web — frontend | **DRS POO Studio**: SPA (React + Vite + Tailwind) que consume esa API | [`frontend/`](./frontend) |
+
+Ambos se despliegan juntos en Vercel como un único proyecto (ver `vercel.json`).
 # DRS-Guia1
