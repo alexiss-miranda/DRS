@@ -12,16 +12,18 @@ export default function EmpleadoSandbox({ onLog }) {
   const crear = async () => {
     setMensaje(null);
     setLoading(true);
-    const { ok, status, data } = await api.crearEmpleado(nombre, edad);
+    const { ok, status, data, ms } = await api.crearEmpleado(nombre, edad);
     setLoading(false);
 
     onLog({
       method: "POST",
       endpoint: "/api/empleado",
-      call: `Empleado("${nombre}", ${edad})`,
-      status,
+      payload: { nombre, edad },
+      level: "info",
       ok,
-      result: ok ? `${data.nombre}, ${data.edad} años` : data.error,
+      status,
+      ms,
+      response: ok ? { nombre: data.nombre, edad: data.edad } : { error: data.error },
     });
 
     if (!ok) {

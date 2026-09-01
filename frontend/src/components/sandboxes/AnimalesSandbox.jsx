@@ -14,16 +14,18 @@ export default function AnimalesSandbox({ onLog }) {
 
   const invocar = async (tipo) => {
     setLoading(tipo);
-    const { ok, status, data } = await api.animalSonido(tipo);
+    const { ok, status, data, ms } = await api.animalSonido(tipo);
     setLoading(null);
 
     onLog({
       method: "POST",
       endpoint: "/api/animales/sonido",
-      call: `animal.hacer_sonido()  # instancia: ${tipo}`,
-      status,
+      payload: { tipo },
+      level: "info",
       ok,
-      result: ok ? `"${data.sonido}" (${data.clase})` : data.error,
+      status,
+      ms,
+      response: ok ? { sonido: data.sonido, clase: data.clase } : { error: data.error },
     });
 
     if (ok) {

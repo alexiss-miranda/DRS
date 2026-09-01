@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>DRS POO Studio — Ejercicio 05: Herencia Multinivel</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+  
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              dark: "#0b101b",
+              card: "#121927",
+              border: "#1e293b",
+              cyan: "#00e5ff",
+              purple: "#7c3aed",
+              green: "#10b981",
+              text: "#e2e8f0",
+              muted: "#94a3b8"
+            }
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+            mono: ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    body { background-color: #0b101b; color: #e2e8f0; }
+    .glass-panel {
+      background-color: rgba(17, 24, 39, 0.8);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .terminal-bg { background-color: #050505; }
+    .border-neon-cyan { border-color: rgba(0, 229, 255, 0.5); box-shadow: 0 0 15px rgba(0, 229, 255, 0.2); }
+    .border-neon-purple { border-color: rgba(124, 58, 237, 0.5); box-shadow: 0 0 15px rgba(124, 58, 237, 0.2); }
+    .neon-cyan { color: #00e5ff; text-shadow: 0 0 8px rgba(0, 229, 255, 0.6); }
+    .neon-purple { color: #c084fc; text-shadow: 0 0 8px rgba(168, 85, 247, 0.6); }
+  </style>
+</head>
+<body class="font-sans h-screen flex flex-col overflow-hidden text-brand-text">
+
+  <!-- Barra Superior de Navegación -->
+  <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-[#0b101b]/90 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+    <div class="flex items-center gap-3">
+      <span class="font-bold text-lg text-white tracking-tight">DRS POO Studio — Guía 1 POO</span>
+    </div>
+    
+    <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+      <a href="/cuenta-bancaria" class="text-brand-muted hover:text-white transition-colors">Abstracción</a>
+      <a href="/empleado" class="text-brand-muted hover:text-white transition-colors">Encapsulación</a>
+      <a href="/vehiculo" class="text-brand-muted hover:text-white transition-colors">Herencia</a>
+      <a href="/animales" class="text-brand-muted hover:text-white transition-colors">Polimorfismo</a>
+      <a href="/herencia-multinivel" class="text-white font-semibold flex items-center gap-2 border-b-2 border-brand-cyan pb-1 text-brand-cyan">
+        <span class="w-1.5 h-1.5 rounded-full bg-brand-cyan shadow-[0_0_8px_#00e5ff]"></span>
+        Herencia Multinivel
+      </a>
+    </nav>
+    
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-2 text-brand-green font-mono text-xs bg-brand-green/10 px-3 py-1 rounded-full border border-brand-green/30">
+        <span class="w-2 h-2 rounded-full bg-brand-green animate-pulse"></span>
+        API Flask: En línea (200 OK)
+      </div>
+      <button class="text-brand-muted hover:text-white transition-colors p-1">
+        <span class="material-symbols-outlined text-xl">dark_mode</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Espacio de Trabajo Principal (3 Columnas) -->
+  <main class="flex-1 mt-16 flex flex-col md:flex-row gap-px bg-black/40 h-[calc(100vh-64px)] overflow-hidden">
+    
+    <!-- Columna 1: Teoría & Diagrama UML 3 Niveles -->
+    <aside class="w-full md:w-80 lg:w-96 glass-panel h-full flex flex-col p-5 gap-4 overflow-y-auto shrink-0 z-10">
+      <div class="mb-1">
+        <span class="text-brand-cyan font-mono text-xs tracking-widest uppercase font-semibold">EJERCICIO 05</span>
+        <h2 class="text-2xl font-bold text-white mt-0.5">Herencia Multinivel</h2>
+      </div>
+
+      <!-- Tarjeta de Teoría -->
+      <div class="bg-[#121927] rounded-xl p-4 border border-[#1e293b] relative overflow-hidden group">
+        <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-brand-cyan to-transparent"></div>
+        <h3 class="text-xs font-semibold text-brand-cyan mb-1.5 flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-sm">menu_book</span> Teoría: Cadena Jerárquica & MRO
+        </h3>
+        <p class="text-xs text-brand-muted leading-relaxed">
+          La <strong class="text-white">Herencia Multinivel</strong> se produce cuando una clase hereda de otra clase derivada (<code class="font-mono text-brand-cyan">Animal</code> &rarr; <code class="font-mono text-purple-400">Mamifero</code> &rarr; <code class="font-mono text-brand-cyan">Perro</code>). El <strong class="text-brand-green">MRO (Orden de Resolución de Métodos)</strong> busca primero en la clase actual y asciende progresivamente por la jerarquía.
+        </p>
+      </div>
+
+      <!-- Diagrama UML 3 Niveles -->
+      <div class="bg-[#121927] rounded-xl p-4 border border-[#1e293b] flex-1 flex flex-col">
+        <h3 class="text-xs font-semibold text-brand-cyan mb-3 flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-sm">account_tree</span> Jerarquía de 3 Niveles
+        </h3>
+        
+        <div class="flex-1 flex flex-col items-center justify-center space-y-2 font-mono text-xs">
+          <!-- Nivel 1: Animal -->
+          <div class="w-full max-w-[240px] rounded-lg border border-slate-600 bg-[#0e1626] p-0 overflow-hidden shadow-md">
+            <div class="bg-slate-800/80 px-3 py-1.5 border-b border-white/10 text-center font-bold text-white">
+              Nivel 1: Animal (Raíz)
+            </div>
+            <div class="p-2.5 text-[11px] text-brand-muted">
+              + hacer_sonido(): str
+            </div>
+          </div>
+
+          <!-- Flecha de Herencia 1 -->
+          <div class="flex flex-col items-center text-slate-500">
+            <div class="w-[1px] h-3 bg-slate-500"></div>
+            <span class="material-symbols-outlined text-xs -mt-1">keyboard_arrow_down</span>
+          </div>
+
+          <!-- Nivel 2: Mamifero -->
+          <div class="w-full max-w-[240px] rounded-lg border border-purple-500/50 bg-[#150f24] p-0 overflow-hidden shadow-md border-neon-purple">
+            <div class="bg-purple-950/80 px-3 py-1.5 border-b border-purple-500/30 text-center font-bold text-purple-300">
+              Nivel 2: Mamifero(Animal)
+            </div>
+            <div class="p-2.5 text-[11px] text-purple-200">
+              + alimentar(): str
+            </div>
+          </div>
+
+          <!-- Flecha de Herencia 2 -->
+          <div class="flex flex-col items-center text-brand-cyan">
+            <div class="w-[1px] h-3 bg-brand-cyan"></div>
+            <span class="material-symbols-outlined text-xs -mt-1">keyboard_arrow_down</span>
+          </div>
+
+          <!-- Nivel 3: Perro -->
+          <div class="w-full max-w-[240px] rounded-lg border border-brand-cyan/60 bg-[#0c1626] p-0 overflow-hidden shadow-md border-neon-cyan">
+            <div class="bg-cyan-950/80 px-3 py-1.5 border-b border-brand-cyan/30 text-center font-bold text-brand-cyan">
+              Nivel 3: Perro(Mamifero)
+            </div>
+            <div class="p-2.5 text-[11px] space-y-1">
+              <div class="text-purple-300 italic text-[10px]">Hereda: + alimentar()</div>
+              <div class="text-brand-green font-semibold">+ hacer_sonido() [sobrescrito]</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Columna 2: Simulador & Trazador MRO -->
+    <section class="flex-1 glass-panel h-full flex flex-col relative z-20 shadow-[0_0_30px_rgba(0,0,0,0.5)] overflow-y-auto p-5 gap-4">
+      
+      <!-- Context Header -->
+      <div class="flex justify-between items-center bg-[#121927]/60 p-3 rounded-xl border border-white/10">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-brand-cyan">sports_esports</span>
+          <h2 class="text-sm font-bold text-white">Simulador Interactivo (Cadena de Herencia)</h2>
+        </div>
+        <div class="font-mono text-xs text-brand-muted bg-[#0b101b] px-3 py-1 rounded-md border border-white/10">
+          Instancia: <code class="text-brand-cyan font-bold">perro = Perro()</code>
+        </div>
+      </div>
+
+      <!-- Tarjeta Holográfica del Perro Multinivel -->
+      <div class="glass-panel rounded-2xl flex-1 flex flex-col relative overflow-hidden border border-brand-cyan/30 p-4 items-center justify-center min-h-[220px] bg-[#070c18]">
+        
+        <!-- Badge Flotante Trazador de Jerarquía MRO -->
+        <div class="flex items-center gap-2.5 bg-[#0b101b]/90 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/10 font-mono text-xs mb-3 shadow-lg">
+          <span class="text-slate-400">Animal</span>
+          <span class="material-symbols-outlined text-xs text-purple-400">arrow_forward</span>
+          <span class="neon-purple font-semibold">Mamifero</span>
+          <span class="material-symbols-outlined text-xs text-brand-cyan">arrow_forward</span>
+          <span class="neon-cyan font-bold">Perro</span>
+        </div>
+
+        <!-- Imagen Limpia del Canino Cibernético -->
+        <div class="relative w-44 h-44 flex items-center justify-center overflow-hidden rounded-2xl border border-brand-cyan/20 bg-[#050914] shadow-[0_0_30px_rgba(0,229,255,0.15)] my-2">
+          <img class="w-full h-full object-contain filter drop-shadow-[0_0_15px_rgba(0,229,255,0.4)]" 
+               alt="Perro cibernético multinivel" 
+               src="/static/img/perro_cybernetico.jpg" />
+        </div>
+
+        <span class="font-mono text-[11px] text-brand-muted mt-1">
+          Objeto activo: <b class="text-white">Perro</b> hereda de <b class="text-purple-400">Mamifero</b> y <b class="text-slate-300">Animal</b>
+        </span>
+      </div>
+
+      <!-- Panel de Control y Salida -->
+      <div class="flex flex-col md:flex-row gap-4">
+        
+        <!-- Botones de Acción por Nivel -->
+        <div class="flex-1 glass-panel rounded-xl p-4 border border-white/10 flex flex-col gap-3">
+          <span class="font-mono text-[10px] text-brand-muted uppercase tracking-wider font-semibold">
+            MÉTODOS DISPONIBLES EN LA JERARQUÍA
+          </span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <button onclick="ejecutarAccion('alimentar')" class="py-2.5 px-3 rounded-xl bg-purple-950/40 hover:bg-purple-900/60 border border-purple-500/50 text-purple-300 font-mono text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-[0_0_10px_rgba(124,58,237,0.2)]">
+              <span class="material-symbols-outlined text-base">restaurant</span>
+              Nivel 2: alimentar()
+            </button>
+            <button onclick="ejecutarAccion('sonido')" class="py-2.5 px-3 rounded-xl bg-cyan-950/40 hover:bg-cyan-900/60 border border-brand-cyan/50 text-brand-cyan font-mono text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-[0_0_10px_rgba(0,229,255,0.2)]">
+              <span class="material-symbols-outlined text-base">volume_up</span>
+              Nivel 3: hacer_sonido()
+            </button>
+          </div>
+        </div>
+
+        <!-- Consola de Salida -->
+        <div class="flex-1 terminal-bg rounded-xl border border-white/10 p-3 font-mono text-xs flex flex-col justify-between">
+          <div class="text-[10px] text-brand-muted uppercase tracking-wider mb-1 flex justify-between items-center">
+            <span>CONSOLA DE SALIDA</span>
+            <span id="resolucion-badge" class="text-brand-green font-bold">● LISTO</span>
+          </div>
+          <div id="output-multinivel" class="text-brand-green font-medium py-1">
+            &gt; Selecciona un método para rastrear su resolución en la jerarquía.
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- Columna 3: Código Python & Registro RPC -->
+    <aside class="w-full md:w-80 lg:w-[400px] glass-panel h-full flex flex-col shrink-0 z-10 border-l border-white/10">
+      
+      <!-- Pestañas Superiores -->
+      <div class="flex p-2 bg-[#121927]/60 border-b border-white/10 gap-2">
+        <button id="tab-code-btn" onclick="switchTab('code')" class="flex-1 py-2 font-mono text-xs rounded-md bg-[#1e293b] text-white shadow-sm border border-white/10 flex justify-center items-center gap-1.5 font-bold">
+          <span class="material-symbols-outlined text-sm">code</span>
+          Código Python
+        </button>
+        <button id="tab-term-btn" onclick="switchTab('terminal')" class="flex-1 py-2 font-mono text-xs rounded-md text-brand-muted hover:text-white flex justify-center items-center gap-1.5">
+          <span class="material-symbols-outlined text-sm">terminal</span>
+          Registro RPC
+        </button>
+      </div>
+
+      <!-- Panel Código Python -->
+      <div id="tab-code" class="flex-1 terminal-bg p-4 overflow-y-auto font-mono text-xs leading-relaxed text-brand-text">
+<pre><code><span class="text-gray-500"># ==========================================
+# EJERCICIO 5: HERENCIA MULTINIVEL
+# Jerarquía vertical de 3 niveles:
+# Nivel 1 (Animal) -> Nivel 2 (Mamifero) -> Nivel 3 (Perro)
+# ==========================================</span>
+
+<span class="text-gray-500"># 1. Nivel 1 (Clase Raíz): Define comportamiento general</span>
+<span class="text-brand-purple">class</span> <span class="text-brand-cyan font-bold">Animal</span>:
+    <span class="text-brand-purple">def</span> <span class="text-yellow-400">hacer_sonido</span>(<span class="text-white">self</span>) -&gt; <span class="text-white">str</span>:
+        <span class="text-brand-purple">return</span> <span class="text-green-300">"El animal hace un sonido genérico."</span>
+
+
+<span class="text-gray-500"># 2. Nivel 2 (Clase Intermedia): Hereda de Animal y agrega alimentar()</span>
+<span class="text-brand-purple">class</span> <span class="text-brand-cyan font-bold">Mamifero</span>(<span class="text-brand-cyan">Animal</span>):
+    <span class="text-brand-purple">def</span> <span class="text-yellow-400">alimentar</span>(<span class="text-white">self</span>) -&gt; <span class="text-white">str</span>:
+        <span class="text-brand-purple">return</span> <span class="text-green-300">"El mamífero alimenta a sus crías."</span>
+
+
+<span class="text-gray-500"># 3. Nivel 3 (Clase Hoja Derivada): Hereda de Mamifero y sobrescribe hacer_sonido()</span>
+<span class="text-brand-purple">class</span> <span class="text-brand-cyan font-bold">Perro</span>(<span class="text-brand-cyan">Mamifero</span>):
+    <span class="text-gray-500"># Sobrescritura de método heredado de Animal</span>
+    <span class="text-brand-purple">def</span> <span class="text-yellow-400">hacer_sonido</span>(<span class="text-white">self</span>) -&gt; <span class="text-white">str</span>:
+        <span class="text-brand-purple">return</span> <span class="text-green-300">"El perro ladra: ¡Guau!"</span>
+
+
+<span class="text-gray-500"># 4. Resolución de Métodos (MRO: Perro -> Mamifero -> Animal -> object)</span>
+perro = <span class="text-brand-cyan">Perro</span>()
+perro.<span class="text-yellow-400">alimentar</span>()    <span class="text-gray-500"># Resuelto en Nivel 2 (Mamifero)</span>
+perro.<span class="text-yellow-400">hacer_sonido</span>() <span class="text-gray-500"># Resuelto en Nivel 3 (Perro)</span></code></pre>
+      </div>
+
+      <!-- Panel Registro RPC -->
+      <div id="tab-terminal" class="hidden flex-1 terminal-bg p-4 font-mono text-xs overflow-y-auto space-y-3">
+        <div class="text-brand-muted/60 pb-2 border-b border-white/10 flex justify-between items-center text-[10px]">
+          <span>TERMINAL / REGISTRO RPC</span>
+          <span class="text-brand-green">● ACTIVO</span>
+        </div>
+        <div id="rpc-logs" class="space-y-3">
+          <div>
+            <span class="text-brand-green">[LISTO]</span> <span class="text-white">GET /api/health</span> <span class="text-brand-green">200 OK</span>
+          </div>
+          <div>
+            <span class="text-brand-cyan">[INICIO]</span> <span class="text-brand-muted">Instancia Perro multinivel lista. MRO: [Perro, Mamifero, Animal, object]</span>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+  </main>
+
+  <script>
+    function switchTab(tab) {
+      const codePanel = document.getElementById("tab-code");
+      const termPanel = document.getElementById("tab-terminal");
+      const codeBtn = document.getElementById("tab-code-btn");
+      const termBtn = document.getElementById("tab-term-btn");
+
+      if (tab === 'code') {
+        codePanel.classList.remove("hidden");
+        termPanel.classList.add("hidden");
+        codeBtn.className = "flex-1 py-2 font-mono text-xs rounded-md bg-[#1e293b] text-white shadow-sm border border-white/10 flex justify-center items-center gap-1.5 font-bold";
+        termBtn.className = "flex-1 py-2 font-mono text-xs rounded-md text-brand-muted hover:text-white flex justify-center items-center gap-1.5";
+      } else {
+        codePanel.classList.add("hidden");
+        termPanel.classList.remove("hidden");
+        termBtn.className = "flex-1 py-2 font-mono text-xs rounded-md bg-[#1e293b] text-white shadow-sm border border-white/10 flex justify-center items-center gap-1.5 font-bold";
+        codeBtn.className = "flex-1 py-2 font-mono text-xs rounded-md text-brand-muted hover:text-white flex justify-center items-center gap-1.5";
+      }
+    }
+
+    function logMultinivelRPC(accion, mensaje, origen) {
+      const logs = document.getElementById("rpc-logs");
+      const entry = document.createElement("div");
+      entry.className = "space-y-1 pt-2 border-t border-white/10";
+      entry.innerHTML = `
+        <div>
+          <span class="text-brand-cyan font-bold">POST</span> /api/herencia-multinivel/accion
+          <span class="text-white">{"accion": "${accion}"}</span>
+        </div>
+        <div class="pl-3 border-l-2 border-purple-500/40 text-brand-muted text-[11px]">
+          &gt; Invocando método: <b class="text-white">perro.${accion === 'alimentar' ? 'alimentar()' : 'hacer_sonido()'}</b><br/>
+          &gt; Resuelto en clase: <span class="${accion === 'alimentar' ? 'text-purple-400 font-bold' : 'text-brand-cyan font-bold'}">${origen}</span><br/>
+          <span class="text-brand-green font-bold">&rarr; 200 OK:</span> "${mensaje}"
+        </div>
+      `;
+      logs.appendChild(entry);
+      logs.scrollTop = logs.scrollHeight;
+    }
+
+    async function ejecutarAccion(accion) {
+      const output = document.getElementById('output-multinivel');
+      const resolucionBadge = document.getElementById('resolucion-badge');
+
+      try {
+        const res = await fetch('/api/herencia-multinivel/accion', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ accion })
+        });
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.error || 'Error al ejecutar acción multinivel');
+
+        const origen = accion === 'alimentar' ? 'Mamifero (Nivel 2)' : 'Perro (Nivel 3 - Sobrescrito)';
+        resolucionBadge.textContent = `● RESUELTO EN: ${origen.toUpperCase()}`;
+        resolucionBadge.className = accion === 'alimentar' ? 'text-purple-400 font-bold' : 'text-brand-cyan font-bold';
+
+        output.innerHTML = `&gt; <span class="${accion === 'alimentar' ? 'text-purple-300' : 'text-brand-cyan'} font-bold">[${origen}]</span> <span class="text-white font-bold">"${data.mensaje}"</span>`;
+
+        logMultinivelRPC(accion, data.mensaje, origen);
+
+      } catch (err) {
+        output.innerHTML = `<span class="text-red-400">&gt; Error: ${err.message}</span>`;
+      }
+    }
+  </script>
+</body>
+</html>

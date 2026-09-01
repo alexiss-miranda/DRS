@@ -15,16 +15,18 @@ export default function VehiculoSandbox({ onLog }) {
 
   const ejecutar = async (accion) => {
     setLoading(accion);
-    const { ok, status, data } = await api.vehiculoAccion(accion);
+    const { ok, status, data, ms } = await api.vehiculoAccion(accion);
     setLoading(null);
 
     onLog({
       method: "POST",
       endpoint: "/api/vehiculo/accion",
-      call: `Coche.${accion}()`,
-      status,
+      payload: { accion },
+      level: "info",
       ok,
-      result: ok ? data.mensaje : data.error,
+      status,
+      ms,
+      response: ok ? { mensaje: data.mensaje } : { error: data.error },
     });
 
     if (ok) {

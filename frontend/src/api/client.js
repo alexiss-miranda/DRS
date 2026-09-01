@@ -1,13 +1,15 @@
 const BASE = "/api";
 
 async function request(path, options = {}) {
+  const started = performance.now();
   const res = await fetch(`${BASE}${path}`, {
     credentials: "include",
     headers: { "Content-Type": "application/json" },
     ...options,
   });
   const data = await res.json().catch(() => ({}));
-  return { ok: res.ok, status: res.status, data };
+  const ms = Math.round(performance.now() - started);
+  return { ok: res.ok, status: res.status, data, ms };
 }
 
 export const api = {

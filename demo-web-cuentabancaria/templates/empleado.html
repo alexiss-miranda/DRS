@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>DRS POO Studio — Encapsulación (Empleado)</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#c0c1ff",
+            "primary-container": "#8083ff",
+            secondary: "#d0bcff",
+            "secondary-container": "#571bc1",
+            tertiary: "#4edea3",
+            "tertiary-container": "#00885d",
+            "surface-dim": "#0f131c",
+            "surface-container": "#1c1f29",
+            "surface-container-low": "#181b25",
+            "surface-container-high": "#262a34",
+            "surface-container-highest": "#31353f",
+            "on-surface": "#dfe2ef",
+            "on-surface-variant": "#c7c4d7",
+            error: "#ffb4ab",
+            "error-container": "#93000a"
+          },
+          fontFamily: {
+            body: ["Inter", "sans-serif"],
+            code: ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    body { background-color: #090D16; }
+    .glass-panel {
+      background-color: rgba(17, 24, 39, 0.8);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .glowing-border {
+      border: 1px solid rgba(192, 193, 255, 0.3);
+      box-shadow: 0 0 15px rgba(192, 193, 255, 0.08);
+    }
+    .terminal-bg {
+      background-color: #050505;
+    }
+  </style>
+</head>
+<body class="text-on-surface font-body h-screen overflow-hidden flex flex-col">
+
+  <!-- TopNavBar -->
+  <header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-surface-dim/80 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+    <div class="flex items-center gap-3">
+      <span class="material-symbols-outlined text-primary text-2xl">shield</span>
+      <span class="font-bold text-lg text-primary">DRS POO Studio — Guía 1 POO</span>
+    </div>
+    
+    <nav class="hidden md:flex gap-8 items-center h-full text-sm font-medium">
+      <a class="text-on-surface-variant hover:text-primary transition-colors h-full flex items-center" href="/cuenta-bancaria">Abstracción</a>
+      <a class="text-primary font-bold border-b-2 border-primary pb-1 h-full flex items-center" href="/empleado">Encapsulación</a>
+      <a class="text-on-surface-variant hover:text-primary transition-colors h-full flex items-center" href="/vehiculo">Herencia</a>
+      <a class="text-on-surface-variant hover:text-primary transition-colors h-full flex items-center" href="/animales">Polimorfismo</a>
+      <a class="text-on-surface-variant hover:text-primary transition-colors h-full flex items-center" href="/herencia-multinivel">Herencia Multinivel</a>
+    </nav>
+    
+    <div class="flex items-center gap-4">
+      <span class="text-xs text-tertiary flex items-center gap-1.5 font-code">
+        <span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+        Flask API: Online (200 OK)
+      </span>
+    </div>
+  </header>
+
+  <!-- Main Workspace (3 Columnas) -->
+  <div class="flex flex-1 pt-16 h-full overflow-hidden">
+    <main class="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-px h-full overflow-hidden bg-black/40">
+      
+      <!-- Columna 1: Concepto & UML -->
+      <section class="glass-panel h-full overflow-y-auto p-6 flex flex-col gap-4">
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary">menu_book</span>
+          Encapsulación & Control
+        </h2>
+        
+        <div class="bg-surface-container/60 p-4 rounded-xl border border-white/5 relative overflow-hidden">
+          <h3 class="text-xs font-semibold text-primary mb-1 flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-sm">lock</span>
+            Name Mangling & Getters/Setters
+          </h3>
+          <p class="text-xs text-on-surface-variant leading-relaxed">
+            En Python, los atributos privados usan doble guion bajo (<code class="bg-black/40 px-1 rounded font-code text-primary">__nombre</code>, <code class="bg-black/40 px-1 rounded font-code text-primary">__edad</code>). La mutación se controla exclusivamente con decoradores <code class="text-secondary font-code">@property</code> y <code class="text-secondary font-code">@setter</code>.
+          </p>
+        </div>
+
+        <!-- UML Node -->
+        <div class="glowing-border rounded-xl overflow-hidden bg-surface-container-low mt-2">
+          <div class="bg-surface-container-high p-3 border-b border-white/10 flex items-center justify-between">
+            <span class="font-code font-bold text-sm text-primary flex items-center gap-2">
+              <span class="material-symbols-outlined text-sm">badge</span>
+              class Empleado
+            </span>
+            <span class="px-2 py-0.5 rounded text-[10px] bg-primary/20 text-primary border border-primary/30 uppercase tracking-wider font-code">UML</span>
+          </div>
+          <div class="p-4 font-code text-xs">
+            <div class="text-error/90 mb-3 border-b border-white/10 pb-3 space-y-1">
+              <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[13px]">lock</span> - __nombre: str (Privado 🔒)</div>
+              <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[13px]">lock</span> - __edad: int (Privado 🔒)</div>
+            </div>
+            <div class="text-tertiary space-y-1.5">
+              <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[13px]">visibility</span> + @property nombre -> str</div>
+              <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[13px]">edit</span> + @nombre.setter(valor: str)</div>
+              <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[13px]">visibility</span> + @property edad -> int</div>
+              <div class="flex items-center gap-2"><span class="material-symbols-outlined text-[13px]">edit</span> + @edad.setter(valor: int)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-error-container/20 border border-error/30 p-4 rounded-xl mt-auto">
+          <h4 class="text-xs font-bold text-error flex items-center gap-1.5 mb-1.5">
+            <span class="material-symbols-outlined text-sm">warning</span> Reglas de Validación (ValueError)
+          </h4>
+          <ul class="text-xs text-on-surface-variant list-disc pl-4 space-y-1">
+            <li>El nombre no puede estar vacío ni tener solo espacios.</li>
+            <li>La edad debe ser mayor que 0 y menor que 100.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Columna 2: Simulador & Probador de Setters -->
+      <section class="glass-panel h-full overflow-y-auto p-6 flex flex-col items-center justify-center gap-6">
+        
+        <!-- Credencial Holográfica ID Badge -->
+        <div class="w-full max-w-sm rounded-2xl p-6 bg-gradient-to-b from-[#181d2a] to-[#0f1422] border border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.5)] relative overflow-hidden group">
+          <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPC9zdmc+')] opacity-20"></div>
+          <div class="absolute top-0 right-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-60"></div>
+          
+          <div class="relative z-10 flex flex-col items-center">
+            <div class="font-mono text-purple-300 tracking-widest text-[10px] mb-4 opacity-75 uppercase font-semibold">DRS TECH SOLUTIONS — ID BADGE</div>
+            
+            <!-- Avatar Container con Anillo Giratorio Neón -->
+            <div class="relative w-24 h-24 mb-4 flex items-center justify-center">
+              <!-- Anillo Giratorio Cuadrado-Redondeado Neón -->
+              <div id="badge-spinner" class="absolute -inset-1.5 rounded-2xl border-2 border-purple-500/40 animate-[spin_6s_linear_infinite] border-t-purple-400 border-r-cyan-400 shadow-[0_0_15px_rgba(168,85,247,0.35)]"></div>
+              
+              <!-- Imagen del Avatar -->
+              <div class="w-full h-full rounded-2xl bg-[#1e293b] overflow-hidden border-2 border-[#0b101b] z-10 relative shadow-xl flex items-center justify-center">
+                <img id="badge-avatar-img" class="w-full h-full object-cover" 
+                     alt="Juan Pérez Avatar" 
+                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtzcXiW5ZJDWWkysPS1jD_Ec3Onnq4C7C6r9yUbIxKBGvQUygLo06omLbx_E2fU4fsQR9FMzxlBiN0busjD1V7dTDVNo07ETacbGAcOsbv76uXAKVnybTXDu4spLHLdmNvGRtXcsJeg37CX9-k9LRWjQ_7j96SW3quEKqCzTMnINE_6CLjmLsdR1VA23FgZwrU6vE8NZjH3dCgZaOpGZtZE5VILMMF2KlZtF5Npslqv5PgXuaT99fqotj9sL1fWK4hXlPS8SXHBdx4" />
+              </div>
+            </div>
+
+            <h3 id="badge-nombre" class="text-xl font-bold text-white mb-0.5">Juan Pérez</h3>
+            <p id="badge-edad" class="text-xs text-on-surface-variant mb-3 flex items-center gap-2 font-mono">
+              28 años <span class="w-1 h-1 rounded-full bg-white/20"></span> <span class="text-purple-400 font-semibold">#EMP-0421</span>
+            </p>
+            
+            <div id="badge-status" class="px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-xs font-semibold flex items-center gap-1.5 font-mono">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#10b981]"></span>
+              ACTIVO
+            </div>
+          </div>
+        </div>
+
+        <!-- Formulario de Mutación con Setters -->
+        <div class="w-full max-w-sm flex flex-col gap-3">
+          <div class="flex gap-1.5 flex-wrap justify-center mb-1">
+            <button onclick="setPresets('Juan Pérez', 28)" class="px-2.5 py-1 rounded bg-surface-container-high border border-white/10 text-[11px] text-on-surface-variant hover:border-primary/50 transition-colors">✅ Juan, 28</button>
+            <button onclick="setPresets('', 25)" class="px-2.5 py-1 rounded bg-surface-container-high border border-white/10 text-[11px] text-on-surface-variant hover:border-error/50 transition-colors">⚠️ Nombre ""</button>
+            <button onclick="setPresets('Ana López', -5)" class="px-2.5 py-1 rounded bg-surface-container-high border border-white/10 text-[11px] text-on-surface-variant hover:border-error/50 transition-colors">❌ Edad -5</button>
+            <button onclick="setPresets('Luis Gómez', 120)" class="px-2.5 py-1 rounded bg-surface-container-high border border-white/10 text-[11px] text-on-surface-variant hover:border-error/50 transition-colors">❌ Edad 120</button>
+          </div>
+
+          <div>
+            <label class="text-xs text-on-surface-variant block mb-1">Nombre (<code class="text-primary font-code">@nombre.setter</code>)</label>
+            <input id="input-nombre" class="w-full bg-surface-dim border border-white/10 rounded-lg px-3 py-2 text-white font-body text-sm focus:border-primary focus:outline-none transition-all" type="text" value="Juan Pérez"/>
+          </div>
+
+          <div>
+            <label class="text-xs text-on-surface-variant block mb-1">Edad (<code class="text-primary font-code">@edad.setter</code>)</label>
+            <input id="input-edad" class="w-full bg-surface-dim border border-white/10 rounded-lg px-3 py-2 text-white font-code text-sm focus:border-primary focus:outline-none transition-all" type="number" value="28"/>
+          </div>
+
+          <button id="btn-submit" onclick="ejecutarSetters()" class="mt-2 w-full py-2.5 rounded-lg bg-gradient-to-r from-primary-container to-secondary-container text-white text-xs font-bold shadow-[0_0_20px_rgba(128,131,255,0.3)] hover:shadow-[0_0_25px_rgba(128,131,255,0.6)] transition-all flex items-center justify-center gap-1.5">
+            <span class="material-symbols-outlined text-base">play_arrow</span>
+            Ejecutar Setters (@property)
+          </button>
+
+          <!-- Toast Alerta -->
+          <div id="toast-alerta" class="hidden p-2.5 rounded-lg text-xs font-code flex items-start gap-2 transition-all"></div>
+        </div>
+      </section>
+
+      <!-- Columna 3: Terminal de Logs & Código -->
+      <section class="h-full flex flex-col glass-panel">
+        <div class="flex border-b border-white/5 bg-surface-container-low">
+          <button id="tab-term-btn" onclick="switchTab('terminal')" class="px-4 py-3 text-xs font-bold text-white border-b-2 border-primary bg-white/5 flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-sm">terminal</span> Terminal RPC
+          </button>
+          <button id="tab-code-btn" onclick="switchTab('code')" class="px-4 py-3 text-xs font-medium text-on-surface-variant hover:text-white transition-colors flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-sm">code</span> Código Python
+          </button>
+        </div>
+
+        <!-- Panel Terminal -->
+        <div id="tab-terminal" class="flex-1 terminal-bg p-4 font-code text-xs overflow-y-auto space-y-3">
+          <div class="text-on-surface-variant/40"># DRS POO Studio — Consola de Invocación RPC</div>
+          
+          <div>
+            <span class="text-tertiary">[18:20:00]</span>
+            <span class="text-primary">POST</span> /api/empleado
+            <span class="text-white/80">{"nombre": "Juan Pérez", "edad": 28}</span>
+          </div>
+          <div class="pl-3 border-l-2 border-primary/30 text-white/70">
+            >> empleado.nombre = "Juan Pérez"<br/>
+            >> empleado.edad = 28<br/>
+            <span class="text-tertiary font-bold">200 OK</span> - Objeto validado e instanciado.
+          </div>
+        </div>
+
+        <!-- Panel Código Python -->
+        <div id="tab-code" class="hidden flex-1 terminal-bg p-4 font-code text-xs overflow-y-auto text-on-surface-variant leading-relaxed">
+<pre><code class="text-[#dfe2ef]"><span class="text-gray-500"># ==========================================
+# EJERCICIO 2: ENCAPSULACIÓN
+# Protege los atributos privados (__nombre, __edad)
+# usando getters y setters con decoradores @property.
+# ==========================================</span>
+
+<span class="text-[#c0c1ff]">class</span> <span class="text-[#4edea3]">Empleado</span>:
+    <span class="text-gray-500"># 1. Constructor: Delega la asignación a los setters para validar</span>
+    <span class="text-[#8083ff]">def</span> <span class="text-[#c0c1ff]">__init__</span>(<span class="text-[#d0bcff]">self</span>, nombre: <span class="text-[#d0bcff]">str</span>, edad: <span class="text-[#d0bcff]">int</span>):
+        <span class="text-[#d0bcff]">self</span>.nombre = nombre  <span class="text-gray-500"># Activa el setter @nombre.setter</span>
+        <span class="text-[#d0bcff]">self</span>.edad = edad      <span class="text-gray-500"># Activa el setter @edad.setter</span>
+
+    <span class="text-gray-500"># 2. Getter de Nombre: Lectura segura del atributo privado __nombre</span>
+    <span class="text-[#d0bcff]">@property</span>
+    <span class="text-[#8083ff]">def</span> <span class="text-[#4edea3]">nombre</span>(<span class="text-[#d0bcff]">self</span>) -&gt; <span class="text-[#d0bcff]">str</span>:
+        <span class="text-[#8083ff]">return</span> <span class="text-[#d0bcff]">self</span>.__nombre
+
+    <span class="text-gray-500"># 3. Setter de Nombre: Validación (no vacío ni espacios en blanco)</span>
+    <span class="text-[#d0bcff]">@nombre.setter</span>
+    <span class="text-[#8083ff]">def</span> <span class="text-[#4edea3]">nombre</span>(<span class="text-[#d0bcff]">self</span>, valor: <span class="text-[#d0bcff]">str</span>) -&gt; <span class="text-[#8083ff]">None</span>:
+        <span class="text-[#8083ff]">if not</span> valor <span class="text-[#8083ff]">or not</span> valor.strip():
+            <span class="text-[#8083ff]">raise</span> <span class="text-[#ffb4ab]">ValueError</span>(<span class="text-[#4edea3]">"El nombre no puede estar vacío"</span>)
+        <span class="text-[#d0bcff]">self</span>.__nombre = valor
+
+    <span class="text-gray-500"># 4. Getter de Edad: Lectura segura del atributo privado __edad</span>
+    <span class="text-[#d0bcff]">@property</span>
+    <span class="text-[#8083ff]">def</span> <span class="text-[#4edea3]">edad</span>(<span class="text-[#d0bcff]">self</span>) -&gt; <span class="text-[#d0bcff]">int</span>:
+        <span class="text-[#8083ff]">return</span> <span class="text-[#d0bcff]">self</span>.__edad
+
+    <span class="text-gray-500"># 5. Setter de Edad: Validación de regla de negocio (0 < edad < 100)</span>
+    <span class="text-[#d0bcff]">@edad.setter</span>
+    <span class="text-[#8083ff]">def</span> <span class="text-[#4edea3]">edad</span>(<span class="text-[#d0bcff]">self</span>, valor: <span class="text-[#d0bcff]">int</span>) -&gt; <span class="text-[#8083ff]">None</span>:
+        <span class="text-[#8083ff]">if</span> valor &lt;= <span class="text-[#c0c1ff]">0</span> <span class="text-[#8083ff]">or</span> valor &gt;= <span class="text-[#c0c1ff]">100</span>:
+            <span class="text-[#8083ff]">raise</span> <span class="text-[#ffb4ab]">ValueError</span>(<span class="text-[#4edea3]">"La edad debe ser mayor que 0 y menor que 100"</span>)
+        <span class="text-[#d0bcff]">self</span>.__edad = valor</code></pre>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    function switchTab(tab) {
+      const termPanel = document.getElementById("tab-terminal");
+      const codePanel = document.getElementById("tab-code");
+      const termBtn = document.getElementById("tab-term-btn");
+      const codeBtn = document.getElementById("tab-code-btn");
+
+      if (tab === 'terminal') {
+        termPanel.classList.remove("hidden");
+        codePanel.classList.add("hidden");
+        termBtn.className = "px-4 py-3 text-xs font-bold text-white border-b-2 border-primary bg-white/5 flex items-center gap-1.5";
+        codeBtn.className = "px-4 py-3 text-xs font-medium text-on-surface-variant hover:text-white transition-colors flex items-center gap-1.5";
+      } else {
+        termPanel.classList.add("hidden");
+        codePanel.classList.remove("hidden");
+        codeBtn.className = "px-4 py-3 text-xs font-bold text-white border-b-2 border-primary bg-white/5 flex items-center gap-1.5";
+        termBtn.className = "px-4 py-3 text-xs font-medium text-on-surface-variant hover:text-white transition-colors flex items-center gap-1.5";
+      }
+    }
+
+    function setPresets(nombre, edad) {
+      document.getElementById("input-nombre").value = nombre;
+      document.getElementById("input-edad").value = edad;
+    }
+
+    function getInitials(name) {
+      if (!name) return "??";
+      return name.split(" ").filter(Boolean).map(n => n[0]).join("").substring(0, 2).toUpperCase();
+    }
+
+    function logTerminal(hora, payload, status, msg, isError) {
+      const term = document.getElementById("tab-terminal");
+      const entry = document.createElement("div");
+      entry.className = "space-y-1 pt-2 border-t border-white/5";
+      entry.innerHTML = `
+        <div>
+          <span class="${isError ? 'text-error font-bold' : 'text-tertiary'}">[${hora}]</span>
+          <span class="text-primary font-bold">POST</span> /api/empleado
+          <span class="text-white/80">${JSON.stringify(payload)}</span>
+        </div>
+        <div class="pl-3 border-l-2 ${isError ? 'border-error/60 bg-error/10 text-error p-2 rounded-r' : 'border-primary/40 text-white/80'}">
+          ${isError ? `❌ <b>400 Bad Request — ValueError</b><br/>${msg}` : `>> empleado.nombre = "${payload.nombre}"<br/>>> empleado.edad = ${payload.edad}<br/><span class="text-tertiary font-bold">200 OK</span> — ${msg}`}
+        </div>
+      `;
+      term.appendChild(entry);
+      term.scrollTop = term.scrollHeight;
+    }
+
+    async function ejecutarSetters() {
+      const nombre = document.getElementById("input-nombre").value;
+      const edadInput = document.getElementById("input-edad").value;
+      const edad = edadInput === "" ? "" : Number(edadInput);
+      const toast = document.getElementById("toast-alerta");
+      const btn = document.getElementById("btn-submit");
+      const now = new Date().toLocaleTimeString();
+
+      btn.disabled = true;
+
+      try {
+        const response = await fetch('/api/empleado', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nombre, edad })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Error al validar empleado');
+        }
+
+        // Éxito
+        document.getElementById("badge-nombre").textContent = data.nombre;
+        document.getElementById("badge-edad").innerHTML = `${data.edad} años <span class="w-1 h-1 rounded-full bg-white/20"></span> <span class="text-purple-400 font-semibold">#EMP-0421</span>`;
+        
+        const badgeStatus = document.getElementById("badge-status");
+        badgeStatus.className = "px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-xs font-semibold flex items-center gap-1.5 font-mono";
+        badgeStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#10b981]"></span> ACTIVO`;
+        
+        toast.className = "p-2.5 rounded-lg text-xs font-mono flex items-start gap-2 bg-emerald-500/20 border border-emerald-500/30 text-emerald-400";
+        toast.innerHTML = `<span class="material-symbols-outlined text-sm">check_circle</span> Setters ejecutados y validados correctamente.`;
+        
+        logTerminal(now, { nombre, edad }, 200, "Atributos privados actualizados con éxito vía setters.", false);
+
+      } catch (error) {
+        const badgeStatus = document.getElementById("badge-status");
+        badgeStatus.className = "px-3 py-1 rounded-full bg-red-500/20 border border-red-500/40 text-red-400 text-xs font-semibold flex items-center gap-1.5 font-mono";
+        badgeStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]"></span> BLOQUEADO`;
+
+        toast.className = "p-2.5 rounded-lg text-xs font-mono flex items-start gap-2 bg-red-500/20 border border-red-500/40 text-red-400";
+        toast.innerHTML = `<span class="material-symbols-outlined text-sm">error</span> ${error.message}`;
+        logTerminal(now, { nombre, edad }, 400, error.message, true);
+      } finally {
+        btn.disabled = false;
+        toast.classList.remove("hidden");
+      }
+    }
+  </script>
+</body>
+</html>

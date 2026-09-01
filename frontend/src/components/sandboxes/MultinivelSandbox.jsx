@@ -13,16 +13,18 @@ export default function MultinivelSandbox({ onLog }) {
 
   const ejecutar = async (accion) => {
     setLoading(accion);
-    const { ok, status, data } = await api.multinivelAccion(accion);
+    const { ok, status, data, ms } = await api.multinivelAccion(accion);
     setLoading(null);
 
     onLog({
       method: "POST",
       endpoint: "/api/herencia-multinivel/accion",
-      call: `Perro.${accion === "sonido" ? "hacer_sonido" : "alimentar"}()`,
-      status,
+      payload: { accion },
+      level: "info",
       ok,
-      result: ok ? data.mensaje : data.error,
+      status,
+      ms,
+      response: ok ? { mensaje: data.mensaje } : { error: data.error },
     });
 
     if (ok) {
