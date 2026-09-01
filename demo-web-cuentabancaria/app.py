@@ -1,5 +1,6 @@
 import os
 from decimal import Decimal, InvalidOperation
+from pathlib import Path
 
 from flask import Flask, jsonify, render_template, request, session
 
@@ -9,7 +10,14 @@ from cuenta_bancaria import CuentaBancaria, SaldoInsuficienteError
 from empleado import Empleado
 from vehiculo import Coche
 
-app = Flask(__name__)
+BASE_DIR = Path(__file__).resolve().parent
+
+app = Flask(
+    __name__,
+    template_folder=str(BASE_DIR / "templates"),
+    static_folder=str(BASE_DIR / "static"),
+    static_url_path="/static"
+)
 app.secret_key = os.environ.get("SECRET_KEY", "clave-de-desarrollo-no-usar-en-produccion")
 
 DOS_DECIMALES = Decimal("0.01")
