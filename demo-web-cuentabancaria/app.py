@@ -39,6 +39,8 @@ def _cargar_data_uri(nombre_archivo: str) -> str:
 
 PERRO_DATA_URI = _cargar_data_uri("perro_cybernetico.jpg")
 GATO_DATA_URI = _cargar_data_uri("gato_cybernetico.jpg")
+COCHE_DATA_URI = _cargar_data_uri("coche_neon.jpg")
+AVATAR_DATA_URI = _cargar_data_uri("avatar_empleado.jpg")
 
 DOS_DECIMALES = Decimal("0.01")
 
@@ -122,7 +124,7 @@ def reiniciar():
 
 @app.route("/empleado")
 def empleado_view():
-    return render_template("empleado.html")
+    return render_template("empleado.html", avatar_img=AVATAR_DATA_URI)
 
 
 @app.route("/api/empleado", methods=["POST"])
@@ -150,7 +152,7 @@ def api_empleado():
 
 @app.route("/vehiculo")
 def vehiculo_view():
-    return render_template("vehiculo.html")
+    return render_template("vehiculo.html", coche_img=COCHE_DATA_URI)
 
 
 @app.route("/api/vehiculo/accion", methods=["POST"])
