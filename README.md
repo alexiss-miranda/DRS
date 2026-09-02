@@ -9,7 +9,7 @@ Incluye la resolución completa de los 5 ejercicios solicitados en consola con p
 ## 🚀 Despliegue en Línea (Demo Web)
 
 La aplicación web interactiva se encuentra desplegada y disponible públicamente en Vercel:
-* 🌐 **URL de Producción:** [https://drs-psi.vercel.app/ *(o tu enlace asignado en Vercel)*
+* 🌐 **URL de Producción:** [https://drs-psi.vercel.app/
 
 ---
 
